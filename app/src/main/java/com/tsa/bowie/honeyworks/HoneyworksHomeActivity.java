@@ -1,5 +1,6 @@
 package com.tsa.bowie.honeyworks;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,6 +26,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi.DriveContentsResult;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.auth.api.Auth;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,16 +37,9 @@ import java.io.OutputStream;
  * Created by Kevin on 2/15/2016.
  * TODO: Delete and move methods to appropriate classes
  */
-public class HoneyworksHomeActivity extends Activity implements ConnectionCallbacks,
-        OnConnectionFailedListener {
+public class HoneyworksHomeActivity extends Activity {
 
-    private static final String TAG = "drive-quickstart";
-    private static final int REQUEST_CODE_CAPTURE_IMAGE = 1;
-    private static final int REQUEST_CODE_CREATOR = 2;
-    private static final int REQUEST_CODE_RESOLUTION = 3;
-
-    private GoogleApiClient mGoogleApiClient;
-    private Bitmap mBitmapToSave;
+private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,22 +49,12 @@ public class HoneyworksHomeActivity extends Activity implements ConnectionCallba
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
                 .build();
-        mGoogleApiClient.connect();
-
-
-        Button mButtonUpload = (Button) findViewById(R.id.buttonUpload);
-        mButtonUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveFileToDrive();
-            }
-        });
+    // Connect the client. Once connected, the camera is launched.
+    mGoogleApiClient.connect();
 
     }
-
+/*
     private void saveFileToDrive() {
         // Start by creating a new contents, and setting a callback.
         Log.i(TAG, "Creating new contents.");
@@ -133,7 +120,7 @@ public class HoneyworksHomeActivity extends Activity implements ConnectionCallba
         }
         // Connect the client. Once connected, the camera is launched.
         mGoogleApiClient.connect();
-    }
+    }*/
 
     @Override //necessary?
     protected void onPause() {
@@ -143,6 +130,28 @@ public class HoneyworksHomeActivity extends Activity implements ConnectionCallba
         super.onPause();
     }
 
+    @Override
+    protected void onDestroy(){
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
+        super.onDestroy();
+    }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // [START_EXCLUDE]
+                        Intent backIntent = new Intent(HoneyworksHomeActivity.this, HoneyworksLoginActivity.class);
+                        startActivity(backIntent);
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+
+/*
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch (requestCode) {
@@ -166,7 +175,7 @@ public class HoneyworksHomeActivity extends Activity implements ConnectionCallba
         }
     }
 
-    @Override
+    /*@Override
     public void onConnectionFailed(ConnectionResult result) {
         // Called whenever the API client fails to connect.
         Log.i(TAG, "GoogleApiClient connection failed: " + result.toString());
@@ -203,5 +212,5 @@ public class HoneyworksHomeActivity extends Activity implements ConnectionCallba
     public void onConnectionSuspended(int cause) {
         Log.i(TAG, "GoogleApiClient connection suspended");
     }
-
+*/
 }

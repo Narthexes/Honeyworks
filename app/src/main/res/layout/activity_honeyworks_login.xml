@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.tsa.bowie.honeyworks.HoneyworksLoginActivity">
+    tools:context="com.tsa.bowie.honeyworks.HoneyworksLoginActivity"
+    android:weightSum="1">
 
     <!-- Login progress -->
     <ProgressBar
@@ -22,7 +23,8 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="190dp"
+        android:layout_weight="0.43">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -74,4 +76,11 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login With Google"
+        android:id="@+id/buttonGoogleLogin"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

@@ -13,4 +13,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="server_client_id">"honeyworks-1222"</string>
 </resources>
