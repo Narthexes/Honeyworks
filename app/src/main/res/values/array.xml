@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <array name="images">
+                <item>@drawable/alphabet_assignment</item>
+                <item>@drawable/addition_assignment</item>
+                <item>@drawable/coloring_assignment</item>
+        </array>
+
+        <string-array name="names">
+                <item>Alphabet Assignment</item>
+                <item>Addition Assignment</item>
+                <item>Coloring Assignment</item>
+        </string-array>
+
+
+</resources>
